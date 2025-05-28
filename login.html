@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Login</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #live-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(to bottom right, #4a148c, #e91e63);
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #login-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        #sign-in-btn {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        #sign-up-btn {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .forgot-password {
+            color: #777;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        .forgot-password a {
+            color: #2196f3;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        #reset-password-section {
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        #reset-password-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .reset-input-group {
+            margin-bottom: 10px;
+        }
+
+        .reset-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            text-align: left;
+        }
+
+        .reset-input-group input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        #reset-password-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #reset-password-btn:hover {
+            opacity: 0.8;
+        }
+
+        #back-to-login {
+            color: #777;
+            font-size: 0.9em;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #back-to-login:hover {
+            text-decoration: underline;
+            color: #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div id="live-background">
+    </div>
+    <div class="login-container">
+        <h2>Welcome</h2>
+        <div class="input-group">
+            <label for="username">Name:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your name">
+        </div>
+        <div class="input-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password">
+        </div>
+        <div class="button-group">
+            <button id="login-btn">Login</button>
+            <button id="sign-in-btn">Sign In</button>
+            <button id="sign-up-btn">Sign Up</button>
+        </div>
+        <div class="forgot-password">
+            <a id="forgot-password-link">Forgot Password?</a>
+        </div>
+
+        <div id="reset-password-section">
+            <h3>Reset Your Password</h3>
+            <div class="reset-input-group">
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password" placeholder="Enter new password">
+            </div>
+            <div class="reset-input-group">
+                <label for="confirm-password">Confirm New Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm new password">
+            </div>
+            <button id="reset-password-btn">Reset Password</button>
+            <p id="back-to-login">Back to Login</p>
+        </div>
+    </div>
+
+    <script>
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const resetPasswordSection = document.getElementById('reset-password-section');
+        const loginContainer = document.querySelector('.login-container');
+        const backToLoginLink = document.getElementById('back-to-login');
+        const resetPasswordBtn = document.getElementById('reset-password-btn');
+        const newPasswordInput = document.getElementById('new-password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            loginContainer.style.display = 'none';
+            resetPasswordSection.style.display = 'block';
+        });
+
+        backToLoginLink.addEventListener('click', () => {
+            resetPasswordSection.style.display = 'none';
+            loginContainer.style.display = 'block';
+        });
+
+        resetPasswordBtn.addEventListener('click', () => {
+            const newPassword = newPasswordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (newPassword === confirmPassword) {
+              
+                alert('Password reset request sent (implementation on backend required).');
+                resetPasswordSection.style.display = 'none';
+                loginContainer.style.display = 'block';
+                newPasswordInput.value = '';
+                confirmPasswordInput.value = '';
+            } else {
+                alert('New password and confirm password do not match.');
+            }
+        });
+
+        const loginBtn = document.getElementById('login-btn');
+        const signInBtn = document.getElementById('sign-in-btn');
+        const signUpBtn = document.getElementById('sign-up-btn');
+
+        loginBtn.addEventListener('click', () => {
+            alert('Login button clicked!');
+          
+        });
+
+        signInBtn.addEventListener('click', () => {
+            alert('Sign In button clicked!');
+           
+        });
+
+        signUpBtn.addEventListener('click', () => {
+            alert('Sign Up button clicked!');
+            
+        });
+    </script>
+</body>
+</html>
