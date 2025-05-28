@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic Dashboard - Modern Design</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50; /* Green */
+            --secondary-color: #2196F3; /* Blue */
+            --accent-color: #FFC107; /* Amber */
+            --background-light: #f8f9fa;
+            --background-dark: #e9ecef;
+            --text-dark: #343a40;
+            --text-light: #6c757d;
+            --card-background: #ffffff;
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Header Section */
+        .dashboard-header {
+            background-color: var(--card-background);
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 20px;
+        }
+
+        .clinic-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .clinic-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .clinic-name h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .clinic-name p {
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+
+        /* Main Content Area */
+        .dashboard-main {
+            display: flex;
+            flex: 1; /* Take remaining vertical space */
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            background-color: var(--text-dark);
+            color: white;
+            width: 250px;
+            padding: 30px 0;
+            box-shadow: 2px 0 10px var(--shadow-color);
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-left: 5px solid transparent;
+        }
+
+        .sidebar a i {
+            font-size: 1.3em;
+            color: var(--accent-color);
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-left-color: var(--accent-color);
+        }
+
+        .sidebar a.active i {
+            color: white;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: var(--background-light);
+            overflow-y: auto; /* Enable scrolling for content */
+        }
+
+        .module-section {
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            margin-bottom: 30px;
+            display: none; /* Hidden by default, shown by JS */
+        }
+
+        .module-section.active {
+            display: block;
+        }
+
+        .module-section h2 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.8em;
+        }
+
+        /* General Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="tel"],
+        .form-group input[type="email"],
+        .form-group input[type="datetime-local"],
+        .form-group textarea,
+        .form-group select {
+            width: calc(100% - 24px); /* Account for padding */
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            color: var(--text-dark);
+            background-color: var(--background-light);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #43A047;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background-color: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        /* Data Display Tables/Lists */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            overflow: hidden; /* For rounded corners */
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background-color: var(--background-dark);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: var(--background-dark);
+        }
+
+        /* Specific Module Styles */
+        #prescription-output, #appointment-messages {
+            background-color: var(--background-dark);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            color: var(--text-dark);
+            border: 1px dashed var(--secondary-color);
+        }
+
+        #about-clinic-content, #contact-clinic-content {
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        #contact-clinic-content address {
+            margin-top: 15px;
+            font-style: normal;
+        }
+
+        /* 3D Placeholder Styles */
+        .three-d-placeholder {
+            width: 100%;
+            height: 200px; /* Adjust height as needed */
+            background-color: var(--background-dark);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-style: italic;
+            border: 1px dashed var(--border-color);
+            font-size: 0.9em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .dashboard-header {
+                padding: 15px 20px;
+            }
+            .clinic-name h1 {
+                font-size: 1.5em;
+            }
+            .dashboard-main {
+                flex-direction: column; /* Stack sidebar and content */
+            }
+            .sidebar {
+                width: 100%;
+                padding: 20px 0;
+                box-shadow: 0 2px 10px var(--shadow-color);
+            }
+            .sidebar ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            .sidebar li {
+                margin-bottom: 0;
+            }
+            .sidebar a {
+                padding: 10px 15px;
+                font-size: 0.9em;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+            .sidebar a i {
+                font-size: 1.1em;
+                margin-right: 8px;
+            }
+            .sidebar a:hover,
+            .sidebar a.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--accent-color);
+            }
+            .content-area {
+                padding: 20px;
+            }
+            .module-section {
+                padding: 20px;
+            }
+            .module-section h2 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .clinic-info {
+                margin-bottom: 15px;
+            }
+            .sidebar ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            .sidebar a {
+                width: calc(100% - 60px); /* Adjust for padding */
+                text-align: center;
+                justify-content: center;
+            }
+            .sidebar a i {
+                margin-right: 0;
+                margin-bottom: 5px; /* Space out icon from text */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div class="clinic-info">
+            <img src="https://placehold.co/60x60/4CAF50/FFFFFF?text=CL" alt="Clinic Logo" class="clinic-logo">
+            <div class="clinic-name">
+                <h1>Swami Samarth Hospital And Cancer Center</h1>
+                <p>Your Partner in Wellness</p>
+            </div>
+        </div>
+        </div>
+
+    <div class="dashboard-main">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#patient-details" class="active"><i class="fas fa-user-injured"></i> Patient Details</a></li>
+                    <li><a href="#doctor-details"><i class="fas fa-user-md"></i> Doctor Details</a></li>
+                    <li><a href="#total-appointments"><i class="fas fa-calendar-alt"></i> Total Appointments</a></li>
+                    <li><a href="#add-appointment"><i class="fas fa-calendar-plus"></i> Add Appointment</a></li>
+                    <li><a href="#prescription-generator"><i class="fas fa-file-prescription"></i> Prescription Generator</a></li>
+                    <li><a href="#about-clinic"><i class="fas fa-info-circle"></i> About Clinic</a></li>
+                    <li><a href="#contact-clinic"><i class="fas fa-address-book"></i> Contact Clinic</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content-area">
+            <section id="patient-details" class="module-section active">
+                <h2>Patient Details</h2>
+                <div class="three-d-placeholder">
+                    3D Patient Data Visualization Here
+                </div>
+                <p>Overview of all registered patients. Click on a patient for more details.</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Contact</th>
+                            <th>Last Visit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Alice Smith</td>
+                            <td>34</td>
+                            <td>+91 9876543210</td>
+                            <td>2025-05-20</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Bob Johnson</td>
+                            <td>52</td>
+                            <td>+91 9123456789</td>
+                            <td>2025-05-18</td>
+                        </tr>
+                        </tbody>
+                </table>
+            </section>
+
+            <section id="doctor-details" class="module-section">
+                <h2>Doctor Details</h2>
+                <div class="three-d-placeholder">
+                    3D Doctor Profiles / Visuals Here
+                </div>
+                <p>Information about the clinic's medical professionals.</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Specialty</th>
+                            <th>Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>D01</td>
+                            <td>Dr. Priya Sharma</td>
+                            <td>General Physician</td>
+                            <td>+91 9988776655</td>
+                        </tr>
+                        <tr>
+                            <td>D02</td>
+                            <td>Dr. Rohan Gupta</td>
+                            <td>Pediatrician</td>
+                            <td>+91 9000112233</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="total-appointments" class="module-section">
+                <h2>Total Appointments</h2>
+                <div class="three-d-placeholder">
+                    3D Appointment Calendar / Timeline Here
+                </div>
+                <p>View all scheduled and past appointments.</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Appointment ID</th>
+                            <th>Patient Name</th>
+                            <th>Doctor</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A001</td>
+                            <td>Alice Smith</td>
+                            <td>Dr. Priya Sharma</td>
+                            <td>2025-05-25 10:00 AM</td>
+                            <td>Scheduled</td>
+                        </tr>
+                        <tr>
+                            <td>A002</td>
+                            <td>Bob Johnson</td>
+                            <td>Dr. Rohan Gupta</td>
+                            <td>2025-05-23 02:30 PM</td>
+                            <td>Completed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="add-appointment" class="module-section">
+                <h2>Add New Appointment</h2>
+                <div class="three-d-placeholder">
+                    3D Appointment Booking Interface Here
+                </div>
+                <form id="add-appointment-form">
+                    <div class="form-group">
+                        <label for="appt-patient-name">Patient Name:</label>
+                        <input type="text" id="appt-patient-name" name="appt-patient-name" placeholder="e.g., Rahul Kumar" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appt-doctor">Doctor:</label>
+                        <select id="appt-doctor" name="appt-doctor" required>
+                            <option value="">Select Doctor</option>
+                            <option value="Dr. Priya Sharma">Dr. Priya Sharma</option>
+                            <option value="Dr. Rohan Gupta">Dr. Rohan Gupta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="appt-datetime">Date & Time:</label>
+                        <input type="datetime-local" id="appt-datetime" name="appt-datetime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appt-reason">Reason for Appointment / Disease:</label>
+                        <textarea id="appt-reason" name="appt-reason" rows="4" placeholder="e.g., Fever, Routine Checkup"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Book Appointment</button>
+                </form>
+                <div id="appointment-messages">
+                    </div>
+            </section>
+
+            <section id="prescription-generator" class="module-section">
+                <h2>Prescription Generator</h2>
+                <div class="three-d-placeholder">
+                    3D Prescription Writing Interface Here
+                </div>
+                <form id="prescription-form">
+                    <div class="form-group">
+                        <label for="presc-patient-name">Patient Name:</label>
+                        <input type="text" id="presc-patient-name" name="presc-patient-name" placeholder="e.g., Alice Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="presc-medicine-1">Medicine 1 (Name, Dose, Frequency):</label>
+                        <input type="text" id="presc-medicine-1" name="presc-medicine-1" placeholder="e.g., Paracetamol 500mg, 1 tab twice daily">
+                    </div>
+                    <div class="form-group">
+                        <label for="presc-medicine-2">Medicine 2 (Name, Dose, Frequency):</label>
+                        <input type="text" id="presc-medicine-2" name="presc-medicine-2" placeholder="e.g., Amoxicillin 250mg, 1 cap thrice daily">
+                    </div>
+                    <div class="form-group">
+                        <label for="presc-instructions">General Instructions:</label>
+                        <textarea id="presc-instructions" name="presc-instructions" rows="4" placeholder="e.g., Take after meals, Avoid spicy food"></textarea>
+                    </div>
+                    <button type="submit" class="btn-secondary">Generate Prescription</button>
+                </form>
+                <div id="prescription-output">
+                    </div>
+            </section>
+
+            <section id="about-clinic" class="module-section">
+                <h2>About HealthLink Clinic</h2>
+                <div class="three-d-placeholder">
+                    3D Clinic Overview / Values Here
+                </div>
+                <div id="about-clinic-content">
+                    <p>HealthLink Clinic is committed to providing comprehensive and compassionate healthcare services to our community. Established in 20XX, we pride ourselves on a patient-centric approach, leveraging modern medical practices and state-of-the-art technology.</p>
+                    <p>Our team of dedicated doctors and staff ensures that every patient receives personalized care tailored to their unique needs. We believe in fostering a healthy community through preventive care, accurate diagnosis, and effective treatment.</p>
+                    <p><strong>Our Mission:</strong> To deliver accessible, high-quality healthcare that empowers individuals to achieve optimal health and well-being.</p>
+                    <p><strong>Our Vision:</strong> To be a leading healthcare provider recognized for excellence in patient care, innovation, and community health initiatives.</p>
+                </div>
+            </section>
+
+            <section id="contact-clinic" class="module-section">
+                <h2>Contact HealthLink Clinic</h2>
+                <div class="three-d-placeholder">
+                    3D Contact Interface / Map Here
+                </div>
+                <div id="contact-clinic-content">
+                    <p>We are always here to help. Feel free to reach out to us through the following channels:</p>
+                    <address>
+                        <p><strong>Address:</strong> 123 Wellness Avenue, Health City, Nagpur, Maharashtra, India - 440001</p>
+                        <p><strong>Phone:</strong> +91 98765 43210</p>
+                        <p><strong>Email:</strong> info@healthlinkclinic.com</p>
+                        <p><strong>Working Hours:</strong> Mon - Sat: 9:00 AM - 6:00 PM</p>
+                    </address>
+                    <p>You can also use the form below to send us a message:</p>
+                    <form>
+                        <div class="form-group">
+                            <label for="contact-name">Your Name:</label>
+                            <input type="text" id="contact-name" name="contact-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Your Email:</label>
+                            <input type="email" id="contact-email" name="contact-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-message">Message:</label>
+                            <textarea id="contact-message" name="contact-message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            const moduleSections = document.querySelectorAll('.module-section');
+
+            // Function to show a specific module and update active link
+            function showModule(targetId) {
+                moduleSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + targetId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Add click listeners to sidebar links
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    showModule(targetId);
+                });
+            });
+
+            // Set initial active module (Patient Details)
+            showModule('patient-details');
+
+            // --- Form Submission Handlers (Basic Alerts) ---
+
+            // Add Appointment Form
+            const addAppointmentForm = document.getElementById('add-appointment-form');
+            if (addAppointmentForm) {
+                addAppointmentForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const patientName = document.getElementById('appt-patient-name').value;
+                    const doctor = document.getElementById('appt-doctor').value;
+                    const datetime = document.getElementById('appt-datetime').value;
+                    const reason = document.getElementById('appt-reason').value;
+                    const messageArea = document.getElementById('appointment-messages');
+
+                    if (patientName && doctor && datetime) {
+                        messageArea.textContent = `Appointment booked for ${patientName} with ${doctor} on ${new Date(datetime).toLocaleString()}. Reason: ${reason || 'N/A'}. (This data needs to be sent to a backend.)`;
+                        messageArea.style.color = 'green';
+                        addAppointmentForm.reset();
+                    } else {
+                        messageArea.textContent = 'Please fill in all required fields.';
+                        messageArea.style.color = 'red';
+                    }
+                });
+            }
+
+            // Prescription Form
+            const prescriptionForm = document.getElementById('prescription-form');
+            if (prescriptionForm) {
+                prescriptionForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const patientName = document.getElementById('presc-patient-name').value;
+                    const medicine1 = document.getElementById('presc-medicine-1').value;
+                    const medicine2 = document.getElementById('presc-medicine-2').value;
+                    const instructions = document.getElementById('presc-instructions').value;
+                    const outputArea = document.getElementById('prescription-output');
+
+                    if (patientName && medicine1) {
+                        let prescriptionText = `--- HealthLink Clinic Prescription ---\n`;
+                        prescriptionText += `Patient: ${patientName}\n`;
+                        prescriptionText += `Date: ${new Date().toLocaleDateString()}\n`;
+                        prescriptionText += `------------------------------------\n`;
+                        prescriptionText += `1. ${medicine1}\n`;
+                        if (medicine2) {
+                            prescriptionText += `2. ${medicine2}\n`;
+                        }
+                        prescriptionText += `------------------------------------\n`;
+                        prescriptionText += `Instructions: ${instructions || 'As directed by physician.'}\n`;
+                        prescriptionText += `------------------------------------\n`;
+                        prescriptionText += `Dr. [Your Name/Signature]`;
+
+                        outputArea.textContent = prescriptionText;
+                        outputArea.style.color = 'var(--text-dark)';
+                        prescriptionForm.reset();
+                    } else {
+                        outputArea.textContent = 'Please enter patient name and at least one medicine.';
+                        outputArea.style.color = 'red';
+                    }
+                });
+            }
+
+            // Contact Form (basic alert)
+            const contactForm = document.querySelector('#contact-clinic-content form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    alert('Message sent! We will get back to you shortly. (This data needs to be sent to a backend.)');
+                    contactForm.reset();
+                });
+            }
+
+           
+        });
+    </script>
+</body>
+</html>
