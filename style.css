@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(145deg, #1e1e2f, #28283d);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-container {
+  perspective: 1000px;
+}
+
+.login-box {
+  background: #2d2d44;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  transform: rotateY(0deg);
+  transition: transform 0.6s ease;
+}
+
+.login-box h2 {
+  color: #fff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.input-group input {
+  background: none;
+  border: none;
+  border-bottom: 2px solid #888;
+  padding: 10px;
+  width: 100%;
+  color: #fff;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.input-group label {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  color: #888;
+  pointer-events: none;
+  transition: 0.3s ease all;
+}
+
+.input-group input:focus {
+  border-color: #0ff;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: -15px;
+  font-size: 12px;
+  color: #0ff;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #0ff;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s;
+  border-radius: 8px;
+}
+
+button:hover {
+  transform: scale(1.05) rotateX(10deg);
+}
